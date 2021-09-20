@@ -28,3 +28,17 @@ export default class ClientRepository {
     return client;
   }
 
+  public delete(cpf: string): Client | undefined {
+    let client;
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < this.clients.length; i++) {
+      if (cpf === this.clients[i].cpf) {
+        client = this.clients[i];
+        this.clients.splice(i, 1);
+        break;
+      }
+    }
+    return client;
+  }
+
