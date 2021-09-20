@@ -42,3 +42,21 @@ export default class ClientRepository {
     return client;
   }
 
+  public edit({ name, cpf, phone, birthday, address }: Client): Client {
+    const client = new Client({
+      name,
+      cpf,
+      phone,
+      birthday,
+      address,
+    });
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < this.clients.length; i++) {
+      if (cpf === this.clients[i].cpf) {
+        this.clients[i] = client;
+      }
+    }
+    return client;
+  }
+}
