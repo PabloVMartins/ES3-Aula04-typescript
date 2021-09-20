@@ -49,4 +49,29 @@ export default class ProductRepository {
     return product;
   }
 
+  public edit({
+    buyPrice,
+    code,
+    description,
+    lovers,
+    sellPrice,
+    tags,
+  }: Product): Product | undefined {
+    const product = new Product({
+      buyPrice,
+      code,
+      description,
+      lovers,
+      sellPrice,
+      tags,
+    });
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < this.products.length; i++) {
+      if (code === this.products[i].code) {
+        this.products[i] = product;
+      }
+    }
+    return product;
+  }
 }

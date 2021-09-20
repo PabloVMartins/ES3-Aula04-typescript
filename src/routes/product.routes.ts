@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import Product from '../models/Product';
 import ProductRepository from '../repositories/ProductRepository';
+import CreateProductService from '../services/productService/CreateProductService';
 import DeleteProductService from '../services/productService/DeleteProductService';
+import PutProductService from '../services/productService/PutProductService';
 
 const productRouter = Router();
 const productRepository = new ProductRepository();
@@ -37,6 +40,17 @@ productRouter.post('/', (request, response) => {
   }
 });
 
+productRouter.put('/:code', (request, response) => {
+  try {
+    const service = new PutProductService(productRepository);
+    const searchCode = Number(request.params.code);
+    const product: Product = request.body;
+
+    service.execute(searchCode, product);
+    return response.status(200).json(product);
+  } catch (err) {
+    return response.status(400).json({ Error: err.message });
+  }
 });
 
 productRouter.delete('/:code', (request, response) => {
