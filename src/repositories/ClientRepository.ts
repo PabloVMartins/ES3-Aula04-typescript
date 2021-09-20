@@ -16,3 +16,15 @@ export default class ClientRepository {
     return this.clients.find(client => client.cpf == cpf);
   }
 
+  public save({ name, cpf, phone, birthday, address }: Client): Client {
+    const client = new Client({
+      name,
+      cpf,
+      phone,
+      birthday,
+      address,
+    });
+    this.clients.push(client);
+    return client;
+  }
+
