@@ -10,3 +10,9 @@ export default class ClientRepository {
   public findAll(): Array<Client> {
     return this.clients;
   }
+
+  public findByCpf(cpf: string): Client | undefined {
+    // eslint-disable-next-line eqeqeq
+    return this.clients.find(client => client.cpf == cpf);
+  }
+
