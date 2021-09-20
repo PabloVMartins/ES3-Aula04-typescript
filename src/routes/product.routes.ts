@@ -3,13 +3,24 @@ import Product from '../models/Product';
 import ProductRepository from '../repositories/ProductRepository';
 import CreateProductService from '../services/productService/CreateProductService';
 import DeleteProductService from '../services/productService/DeleteProductService';
+import FindByCodeProductService from '../services/productService/FindByCodeProductService';
 import PutProductService from '../services/productService/PutProductService';
 
 const productRouter = Router();
 const productRepository = new ProductRepository();
 
 productRouter.get('/', (request, response) => {
-  response.json(productRepository.findAll());
+productRouter.get('/:code', (request, response) => {
+  try {
+    const service = new FindByCodeProductService(productRepository);
+    const { code } = request.params;
+
+    const product = service.execute(Number(code));
+
+    return response.status(200).json(product);
+  } catch (err) {
+    return response.status(400).json({ Error: err.message });
+  }
 });
 
 productRouter.post('/', (request, response) => {
