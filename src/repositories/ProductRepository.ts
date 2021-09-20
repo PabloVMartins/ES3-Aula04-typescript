@@ -34,4 +34,19 @@ export default class ProductRepository {
     this.products.push(product);
     return product;
   }
+
+  public delete(code: number): Product | undefined {
+    let product;
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < this.products.length; i++) {
+      if (code === this.products[i].code) {
+        product = this.products[i];
+        this.products.splice(i, 1);
+        break;
+      }
+    }
+    return product;
+  }
+
 }
