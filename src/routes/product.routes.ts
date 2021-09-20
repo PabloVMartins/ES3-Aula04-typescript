@@ -10,6 +10,9 @@ const productRouter = Router();
 const productRepository = new ProductRepository();
 
 productRouter.get('/', (request, response) => {
+  response.status(200).json(productRepository.findAll());
+});
+
 productRouter.get('/:code', (request, response) => {
   try {
     const service = new FindByCodeProductService(productRepository);
