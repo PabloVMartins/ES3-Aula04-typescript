@@ -1,82 +1,19 @@
 import { Router } from 'express';
-import Product from '../models/Product';
-import ProductRepository from '../repositories/ProductRepository';
-import CreateProductService from '../services/productService/CreateProductService';
-import DeleteProductService from '../services/productService/DeleteProductService';
-import FindByCodeProductService from '../services/productService/FindByCodeProductService';
-import PutProductService from '../services/productService/PutProductService';
+import ProductController from '../controllers/ProductController';
 
 const productRouter = Router();
-const productRepository = new ProductRepository();
+const productController = new ProductController();
 
-productRouter.get('/', (request, response) => {
-  response.status(200).json(productRepository.findAll());
-});
+productRouter.post('/', productController.create);
 
-productRouter.get('/:code', (request, response) => {
-  try {
-    const service = new FindByCodeProductService(productRepository);
-    const { code } = request.params;
+productRouter.get('/', productController.list);
 
-    const product = service.execute(Number(code));
+productRouter.get('/:id', productController.getById);
 
-    return response.status(200).json(product);
-  } catch (err) {
-    return response.status(400).json({ Error: err.message });
-  }
-});
+productRouter.delete('/:id', productController.delete);
 
-productRouter.post('/', (request, response) => {
-  try {
-    const service = new CreateProductService(productRepository);
-    const {
-      buyPrice,
-      code,
-      description,
-      lovers,
-      sellPrice,
-      tags,
-      id,
-    } = request.body;
-    const produto = service.execute({
-      buyPrice,
-      code,
-      description,
-      lovers,
-      sellPrice,
-      tags,
-      id,
-    });
+productRouter.put('/:id', productController.update);
 
-    return response.status(201).json(produto);
-  } catch (err) {
-    return response.status(400).json({ Erro: err.message });
-  }
-});
-
-productRouter.put('/:code', (request, response) => {
-  try {
-    const service = new PutProductService(productRepository);
-    const searchCode = Number(request.params.code);
-    const product: Product = request.body;
-
-    service.execute(searchCode, product);
-    return response.status(200).json(product);
-  } catch (err) {
-    return response.status(400).json({ Error: err.message });
-  }
-});
-
-productRouter.delete('/:code', (request, response) => {
-  try {
-    const service = new DeleteProductService(productRepository);
-    const { code } = request.params;
-
-    service.execute(Number(code));
-    return response.status(200).json('Produto excluído com sucesso!');
-  } catch (err) {
-    return response.status(400).json({ Erro: err.message });
-  }
-});
+// productRouter.patch('/lovers/:id', productController.increaseLovers);
 
 export default productRouter;
