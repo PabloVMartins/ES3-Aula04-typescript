@@ -1,34 +1,47 @@
-import { uuid } from 'uuidv4';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('product')
 export default class Product {
-  id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
+  @Column({
+    nullable: true,
+  })
   code: number;
 
+  @Column({
+    nullable: true,
+  })
   description: string;
 
+  @Column({
+    nullable: true,
+  })
   buyPrice: number;
 
+  @Column({
+    nullable: true,
+  })
   sellPrice: number;
 
-  tags: Array<Product>;
+  @Column('varchar', { array: true, nullable: true })
+  tags: string[];
 
+  @Column({
+    default: 0,
+  })
   lovers: number;
 
-  constructor({
-    code,
-    description,
-    buyPrice,
-    sellPrice,
-    tags,
-    lovers,
-  }: Omit<Product, 'id'>) {
-    this.id = uuid();
-    this.code = code;
-    this.description = description;
-    this.buyPrice = buyPrice;
-    this.sellPrice = sellPrice;
-    this.tags = tags;
-    this.lovers = lovers;
-  }
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

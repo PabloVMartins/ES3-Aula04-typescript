@@ -1,24 +1,37 @@
-import { uuid } from 'uuidv4';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity('client')
 export default class Client {
-  id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
+  @Column()
   name: string;
 
+  @Column()
   cpf: string;
 
-  phone: number;
+  @Column()
+  mail: string;
 
+  @Column()
+  phone: string;
+
+  @Column()
   birthday: Date;
 
+  @Column()
   address: string;
 
-  constructor({ name, cpf, birthday, address, phone }: Omit<Client, 'id'>) {
-    this.id = uuid();
-    this.name = name;
-    this.cpf = cpf;
-    this.phone = phone;
-    this.birthday = birthday;
-    this.address = address;
-  }
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }
